@@ -7,6 +7,15 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="200" Margin="10,38,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.146,0.237" SelectionChanged="listBox_SelectionChanged"/>
+        <TextBox x:Name="txtBox_filepathInput" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" SpellCheck.IsEnabled="True" TextChanged="txtBox_filepathInput_TextChanged"/>
+        <Button x:Name="btn_add" Content="Add" HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top" Width="75" Click="btn_add_Click"/>
+        <Button x:Name="btn_browse" Content="Browse" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btn_closeToSleep" Content="Close" HorizontalAlignment="Left" Margin="432,288,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btn_runBackup" Content="Run" HorizontalAlignment="Left" Margin="352,288,0,0" VerticalAlignment="Top" Width="75"/>
+        <TextBox x:Name="txtBox_backupLocation" HorizontalAlignment="Left" Height="23" Margin="10,287,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" SpellCheck.IsEnabled="True"/>
+        <Button x:Name="btn_setRepository" Content="Set" HorizontalAlignment="Left" Margin="135,288,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btn_schedule" Content="Schedule" HorizontalAlignment="Left" Margin="432,10,0,0" VerticalAlignment="Top" Width="75" Click="btn_schedule_Click"/>
+        <Button x:Name="btn_history" Content="History" HorizontalAlignment="Left" Margin="352,10,0,0" VerticalAlignment="Top" Width="75" Click="btn_history_Click"/>
     </Grid>
 </Window>

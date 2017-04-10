@@ -24,5 +24,33 @@ namespace FileBackupSystem_FFM
         {
             InitializeComponent();
         }
+
+        private void btn_schedule_Click(object sender, RoutedEventArgs e)
+        {
+            Schedule scheduleWindow = new Schedule();
+            scheduleWindow.Show();
+        }
+
+        private void txtBox_filepathInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void btn_add_Click(object sender, RoutedEventArgs e)
+        {
+            listBox.Items.Add(txtBox_filepathInput.Text);
+            txtBox_filepathInput.Clear();
+        }
+
+        private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
+
+        private void btn_history_Click(object sender, RoutedEventArgs e)
+        {
+            History historyWindow = new FileBackupSystem_FFM.History();
+            historyWindow.Show();
+        }
     }
 }
