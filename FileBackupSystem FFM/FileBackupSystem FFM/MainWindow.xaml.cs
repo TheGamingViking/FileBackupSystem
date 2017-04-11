@@ -52,5 +52,10 @@ namespace FileBackupSystem_FFM
             History historyWindow = new History();
             historyWindow.Show();
         }
+
+        private void checkBox_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
