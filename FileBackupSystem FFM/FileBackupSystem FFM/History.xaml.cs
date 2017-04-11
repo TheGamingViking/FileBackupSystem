@@ -19,6 +19,7 @@ namespace FileBackupSystem_FFM
     /// </summary>
     public partial class History : Window
     {
+
         public History()
         {
             InitializeComponent();
@@ -27,6 +28,16 @@ namespace FileBackupSystem_FFM
         private void btn_close_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void checkBox_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void checkBox2_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

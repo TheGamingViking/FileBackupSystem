@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FileBackupSystem_FFM"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" MaxHeight="350" MaxWidth="525" MinHeight="350" MinWidth="525">
     <Grid>
         <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="200" Margin="10,38,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.146,0.237" SelectionChanged="listBox_SelectionChanged"/>
         <TextBox x:Name="txtBox_filepathInput" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" SpellCheck.IsEnabled="True" TextChanged="txtBox_filepathInput_TextChanged"/>
