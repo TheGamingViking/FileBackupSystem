@@ -27,8 +27,8 @@ namespace FileBackupSystem_FFM
 
         private void btn_schedule_Click(object sender, RoutedEventArgs e)
         {
-            Schedule scheduleWindow = new Schedule();
-            scheduleWindow.Show();
+            Settings settingsWindow = new Settings();
+            settingsWindow.Show();
         }
 
         private void txtBox_filepathInput_TextChanged(object sender, TextChangedEventArgs e)
@@ -49,7 +49,7 @@ namespace FileBackupSystem_FFM
 
         private void btn_history_Click(object sender, RoutedEventArgs e)
         {
-            History historyWindow = new FileBackupSystem_FFM.History();
+            History historyWindow = new History();
             historyWindow.Show();
         }
     }
