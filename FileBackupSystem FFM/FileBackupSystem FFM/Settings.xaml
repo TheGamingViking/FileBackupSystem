@@ -112,7 +112,7 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Day" Width="85" DisplayMemberBinding="{Binding Day}"/>
-                    <GridViewColumn Header="Time" Width="100" DisplayMemberBinding="{Binding Time}"/>
+                    <GridViewColumn Header="Time" Width="97" DisplayMemberBinding="{Binding Time}"/>
                 </GridView>
             </ListView.View>
         </ListView>

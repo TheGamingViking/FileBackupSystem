@@ -24,6 +24,8 @@ namespace FileBackupSystem_FFM
             InitializeComponent();
             List<ScheduleTime> schedule = new List<ScheduleTime>();
             comBox_backups.Text = "1";
+            comBox_day.Text = "Monday";
+            comBox_hours.Text = "00:00";
         }
 
         private void btn_cancel_Click(object sender, RoutedEventArgs e)
