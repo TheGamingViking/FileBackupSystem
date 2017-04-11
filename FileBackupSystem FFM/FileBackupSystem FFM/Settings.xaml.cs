@@ -23,10 +23,7 @@ namespace FileBackupSystem_FFM
         {
             InitializeComponent();
             List<ScheduleTime> schedule = new List<ScheduleTime>();
-            char[] charsToTrim = new char[3];
-            charsToTrim[0] = ':';
-            charsToTrim[1] = '0';
-            charsToTrim[2] = '0';
+            comBox_backups.Text = "1";
         }
 
         private void btn_cancel_Click(object sender, RoutedEventArgs e)
@@ -49,6 +46,12 @@ namespace FileBackupSystem_FFM
             {
 
             }
+        }
+
+        private void btn_confirm_Click(object sender, RoutedEventArgs e)
+        {
+            //Save settings
+            this.Close();
         }
     }
 
