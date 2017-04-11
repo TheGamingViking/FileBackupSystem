@@ -1,0 +1,121 @@
+﻿<Window x:Class="FileBackupSystem_FFM.Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FileBackupSystem_FFM"
+        mc:Ignorable="d"
+        Title="Schedule" Height="300" Width="300">
+    <Grid>
+        <Button x:Name="btn_cancel" Content="Cancel" HorizontalAlignment="Left" Margin="207,238,0,0" VerticalAlignment="Top" Width="75" Click="btn_cancel_Click"/>
+        <Button x:Name="btn_confirm" Content="Confirm" HorizontalAlignment="Left" Margin="127,238,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btn_add" Content="Add" HorizontalAlignment="Left" Margin="207,10,0,0" VerticalAlignment="Top" Width="75" Click="btn_add_Click"/>
+        <ComboBox x:Name="comBox_day" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="102">
+            <ComboBoxItem>
+                <TextBlock>Monday</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>Tuesday</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>Wednesday</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>Thursday</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>Friday</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>Saturday</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>Sunday</TextBlock>
+            </ComboBoxItem>
+        </ComboBox>
+        <ComboBox x:Name="comBox_hours" HorizontalAlignment="Left" Margin="117,10,0,0" VerticalAlignment="Top" Width="85">
+            <ComboBoxItem>
+                <TextBlock>00:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>01:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>02:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>03:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>04:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>05:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>06:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>07:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>08:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>09:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>10:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>11:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>12:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>13:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>14:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>15:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>16:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>17:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>18:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>19:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>20:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>21:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>22:00</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>23:00</TextBlock>
+            </ComboBoxItem>
+        </ComboBox>
+        <Button x:Name="btn_remove" Content="Remove" HorizontalAlignment="Left" Margin="207,37,0,0" VerticalAlignment="Top" Width="75" Click="btn_remove_Click"/>
+        <ListView x:Name="lV_schedule" HorizontalAlignment="Left" Height="196" Margin="10,37,0,0" VerticalAlignment="Top" Width="192">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Day" Width="85" DisplayMemberBinding="{Binding Day}"/>
+                    <GridViewColumn Header="Time" Width="100" DisplayMemberBinding="{Binding Time}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</Window>
