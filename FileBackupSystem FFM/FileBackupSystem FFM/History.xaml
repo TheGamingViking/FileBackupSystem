@@ -11,14 +11,19 @@
         <Button x:Name="btn_restore" Content="Restore" HorizontalAlignment="Left" Margin="127,238,0,0" VerticalAlignment="Top" Width="75"/>
         <Label x:Name="label" Content="Backup History" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label1" Content="Contents" HorizontalAlignment="Left" Margin="182,10,0,0" VerticalAlignment="Top"/>
-        <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="179" Margin="10,41,0,0" VerticalAlignment="Top" Width="100"/>
-        <ListBox x:Name="listBox_Copy" HorizontalAlignment="Right" Height="179" Margin="0,41,10,0" VerticalAlignment="Top" Width="100">
+        <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="217" Margin="10,41,0,0" VerticalAlignment="Top" Width="100">
+            <Label x:Name="label2" Content="Auto" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label x:Name="label2_Copy" Content="Manuel" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label x:Name="label2_Copy1" Content="Manuel" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label x:Name="label2_Copy2" Content="OldAuto" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        </ListBox>
+        <ListBox x:Name="listBox_Copy" HorizontalAlignment="Right" Height="192" Margin="0,41,10,0" VerticalAlignment="Top" Width="100">
             <CheckBox x:Name="checkBox" Content="V.1" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="checkBox_Checked"/>
-            <CheckBox x:Name="checkBox_Copy" Content="V.2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBox_Copy1" Content="V.2.5" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBox_Copy2" Content="V.3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBox_Copy3" Content="V.3.2.4" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBox_Copy4" Content="V.4" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBox2" Content="V.2" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="checkBox2_Checked"/>
+            <CheckBox x:Name="checkBox3" Content="V.2.5" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBox4" Content="V.3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBox5" Content="V.3.2.4" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBox6" Content="V.4" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         </ListBox>
     </Grid>
 </Window>
