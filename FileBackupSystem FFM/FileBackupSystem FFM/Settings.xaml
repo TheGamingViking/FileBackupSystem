@@ -8,7 +8,7 @@
         Title="Schedule" Height="300" Width="300">
     <Grid>
         <Button x:Name="btn_cancel" Content="Cancel" HorizontalAlignment="Left" Margin="207,238,0,0" VerticalAlignment="Top" Width="75" Click="btn_cancel_Click"/>
-        <Button x:Name="btn_confirm" Content="Confirm" HorizontalAlignment="Left" Margin="127,238,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btn_confirm" Content="Confirm" HorizontalAlignment="Left" Margin="127,238,0,0" VerticalAlignment="Top" Width="75" Click="btn_confirm_Click"/>
         <Button x:Name="btn_add" Content="Add" HorizontalAlignment="Left" Margin="207,10,0,0" VerticalAlignment="Top" Width="75" Click="btn_add_Click"/>
         <ComboBox x:Name="comBox_day" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="102">
             <ComboBoxItem>
@@ -116,6 +116,44 @@
                 </GridView>
             </ListView.View>
         </ListView>
-
+        <TextBlock x:Name="txtBlock_backups" HorizontalAlignment="Left" Margin="207,64,0,0" TextWrapping="Wrap" Text="Number of backups to keep" VerticalAlignment="Top" Width="75"/>
+        <ComboBox x:Name="comBox_backups" HorizontalAlignment="Left" Margin="207,117,0,0" VerticalAlignment="Top" Width="75">
+            <ComboBoxItem>
+                <TextBlock>1</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>2</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>3</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>4</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>5</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>6</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>7</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>8</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>9</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>10</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>11</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>12</TextBlock>
+            </ComboBoxItem>
+        </ComboBox>
     </Grid>
 </Window>
