@@ -25,7 +25,7 @@ namespace FileBackupSystem_FFM
             }
             else
             {
-                MainWindow main = new FileBackupSystem_FFM.MainWindow();
+                MainWindow main = new MainWindow();
                 main.ShowDialog();
                 this.Shutdown();
             }
