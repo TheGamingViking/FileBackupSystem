@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Forms;
+using System.Windows;
 
 namespace FileBackupSystem_FFM
 {
@@ -40,7 +42,7 @@ namespace FileBackupSystem_FFM
         {
             if (txtBox_filepathInput.Text != "" || txtBox_filepathInput.Text != " ")
             {
-                CheckBox checkbox = new CheckBox();
+                System.Windows.Controls.CheckBox checkbox = new System.Windows.Controls.CheckBox();
                 checkbox.Content = txtBox_filepathInput.Text;
                 listBox.Items.Add(checkbox);
             }
@@ -70,17 +72,17 @@ namespace FileBackupSystem_FFM
 
         private void btn_runBackup_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Unchecked folders will be removed from list of folders to back-up.\nAre you sure you wish to back-up selected folders?", "Confirm backup", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            if (System.Windows.MessageBox.Show("Unchecked folders will be removed from list of folders to back-up.\nAre you sure you wish to back-up selected folders?", "Confirm backup", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
-                List<CheckBox> toRemove = new List<CheckBox>();
-                foreach (CheckBox item in listBox.Items)
+                List<System.Windows.Controls.CheckBox> toRemove = new List<System.Windows.Controls.CheckBox>();
+                foreach (System.Windows.Controls.CheckBox item in listBox.Items)
                 {
                     if (!(bool)item.IsChecked)
                     {
                         toRemove.Add(item);
                     }
                 }
-                foreach (CheckBox item in toRemove)
+                foreach (System.Windows.Controls.CheckBox item in toRemove)
                 {
                     listBox.Items.Remove(item);
                 }
@@ -91,5 +93,21 @@ namespace FileBackupSystem_FFM
 
             }
         }
+
+        private void btn_browse_Click(object sender, RoutedEventArgs e)
+        {
+            FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
+            folderBrowser.ShowDialog();
+            txtBox_filepathInput.Text = folderBrowser.SelectedPath;
+        }
+
+        private void btn_setRepository_Click(object sender, RoutedEventArgs e)
+        {
+            FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
+            folderBrowser.ShowDialog();
+            txtBox_filepathInput.Text = folderBrowser.SelectedPath;
+        }
+
+
     }
 }
