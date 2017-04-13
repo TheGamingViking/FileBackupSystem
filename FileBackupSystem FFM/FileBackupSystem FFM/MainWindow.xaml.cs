@@ -88,7 +88,7 @@ namespace FileBackupSystem_FFM
                 }
                 toRemove.Clear();
 
-                Backupper backup = new Backupper();
+                Backupper backup = new Backupper(BackupType.Manual, listBox.Items);
             }
             else
             {
