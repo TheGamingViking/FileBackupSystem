@@ -11,7 +11,7 @@ namespace FileBackupSystem_FFM
     class ServiceClass : ServiceBase
     {
         //Fields
-        protected Timer timer = new Timer(300000);
+        protected Timer timer = new Timer(60000);
 
         //Properties
 
@@ -36,7 +36,7 @@ namespace FileBackupSystem_FFM
         }
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            //Zug Zug
+            System.Windows.MessageBox.Show("Timer elapsed bitches!");
         }
     }
 }
