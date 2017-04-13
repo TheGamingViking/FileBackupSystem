@@ -18,7 +18,7 @@ namespace FileBackupSystem_FFM
         //Constructors
         public ServiceClass()
         {
-            CanPauseAndContinue = false;
+            CanPauseAndContinue = true;
             CanShutdown = true;
             ServiceName = "File_Backup_Service";
         }
@@ -36,14 +36,7 @@ namespace FileBackupSystem_FFM
         }
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            if (System.Windows.MessageBox.Show("Timer elapsed bitches!", "Filebackup_Service", System.Windows.MessageBoxButton.OK) != System.Windows.MessageBoxResult.OK)
-            {
-                System.Windows.MessageBox.Show("Fuck");
-            }
-            else
-            {
-                System.Windows.MessageBox.Show("Worked?");
-            }
+            System.IO.File.Create(@"C:\Users\VirtualGamingViking\Desktop");
         }
     }
 }
