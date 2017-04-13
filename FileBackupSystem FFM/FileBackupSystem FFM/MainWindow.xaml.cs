@@ -88,7 +88,7 @@ namespace FileBackupSystem_FFM
                 }
                 toRemove.Clear();
 
-                BackupFiles();
+                Backupper backup = new Backupper();
             }
             else
             {
@@ -109,10 +109,6 @@ namespace FileBackupSystem_FFM
             repositoryBrowser.ShowDialog();
             txtBox_backupLocation.Text = repositoryBrowser.SelectedPath;
             //Save to database
-        }
-        private void BackupFiles()
-        {
-
         }
     }
 }

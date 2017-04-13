@@ -61,6 +61,7 @@
     <Compile Include="BackupInstallerAsService.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Backupper.cs" />
     <Compile Include="History.xaml.cs">
       <DependentUpon>History.xaml</DependentUpon>
     </Compile>
