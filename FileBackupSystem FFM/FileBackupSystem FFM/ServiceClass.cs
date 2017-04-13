@@ -38,9 +38,5 @@ namespace FileBackupSystem_FFM
         {
             System.Windows.MessageBox.Show("Timer elapsed bitches!", "Elapsed timer", System.Windows.MessageBoxButton.OK);
         }
-        static void Main()
-        {
-            System.ServiceProcess.ServiceBase.Run(new ServiceClass());
-        }
     }
 }
