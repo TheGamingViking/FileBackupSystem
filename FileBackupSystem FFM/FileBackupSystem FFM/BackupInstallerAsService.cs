@@ -11,7 +11,7 @@ using System.Collections;
 namespace FileBackupSystem_FFM
 {
     [RunInstaller(true)]
-    class BackupInstallerAsService : Installer
+    public class BackupInstallerAsService : Installer
     {
         //Fields
         ServiceInstaller serviceInstaller;
