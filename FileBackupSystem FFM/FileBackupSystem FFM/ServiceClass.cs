@@ -36,7 +36,7 @@ namespace FileBackupSystem_FFM
         }
         private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            System.Windows.MessageBox.Show("Timer elapsed bitches!", "Elapsed timer", System.Windows.MessageBoxButton.OK);
+            System.Windows.MessageBox.Show("Timer elapsed!", "Elapsed timer", System.Windows.MessageBoxButton.OK);
         }
     }
 }
