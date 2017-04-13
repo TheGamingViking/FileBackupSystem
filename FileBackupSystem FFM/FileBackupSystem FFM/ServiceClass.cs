@@ -11,7 +11,7 @@ namespace FileBackupSystem_FFM
     class ServiceClass : ServiceBase
     {
         //Fields
-        protected Timer timer = new Timer(60000);
+        protected Timer timer = new Timer(30000);
 
         //Properties
 
@@ -26,17 +26,21 @@ namespace FileBackupSystem_FFM
         //Methods
         protected override void OnStart(string[] args)
         {
-            timer.Enabled = true;
+            timer.Start();
             timer.AutoReset = true;
             timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
         }
         protected override void OnStop()
         {
-            timer.Enabled = false;
+            
         }
-        private static void OnTimedEvent(object source, ElapsedEventArgs e)
+        private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            System.IO.File.Create(@"C:\Users\VirtualGamingViking\Desktop");
+            System.Windows.MessageBox.Show("Timer elapsed bitches!", "Elapsed timer", System.Windows.MessageBoxButton.OK);
+        }
+        static void Main()
+        {
+            System.ServiceProcess.ServiceBase.Run(new ServiceClass());
         }
     }
 }
