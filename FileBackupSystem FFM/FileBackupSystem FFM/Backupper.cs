@@ -46,14 +46,17 @@ namespace FileBackupSystem_FFM
         public void MakeBackup(string[] sourceDirs, string destDir)
         {
             destDir += $"\\{DateTime.Now.ToOADate()}";
-            System.IO.Directory.CreateDirectory(destDir);
             foreach (string directory in sourceDirs)
             {
                 foreach (string file in System.IO.Directory.GetFiles(directory.ToString()))
                 {
-                    System.IO.File.Copy($"{file}", $"{destDir}\\{file.Split('\\').Last()}");
+                    string[] tempDirPath;
+                    tempDirPath = file.Split('\\');
+                    System.IO.Directory.CreateDirectory($"{destDir}\\{tempDirPath[tempDirPath.Length - 2]}");
+                    System.IO.File.Copy($"{file}", $"{destDir}\\{tempDirPath[tempDirPath.Length - 2]}\\{tempDirPath.Last()}");
                 }
             }
+            destDir.Remove(2);
         }
         public void UpdateBackup()
         {
