@@ -14,7 +14,7 @@ namespace FileBackupSystem_FFM
     /// </summary>
     public partial class App : Application
     {
-        protected override void OnStartup(StartupEventArgs e)
+        /*protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
             string[] commandLineArgs = Environment.GetCommandLineArgs();
@@ -29,6 +29,6 @@ namespace FileBackupSystem_FFM
                 main.ShowDialog();
                 this.Shutdown();
             }
-        }
+        }*/
     }
 }

@@ -88,7 +88,12 @@ namespace FileBackupSystem_FFM
                 }
                 toRemove.Clear();
 
-                Backupper backup = new Backupper(BackupType.Manual, listBox.Items);
+                List<string> sourceDirs = new List<string>();
+                foreach (System.Windows.Controls.CheckBox checkBox in listBox.Items)
+                {
+                    sourceDirs.Add(checkBox.Content.ToString());
+                }
+                Backupper backup = new Backupper(BackupType.Manual, sourceDirs, txtBox_backupLocation.Text);
             }
             else
             {
