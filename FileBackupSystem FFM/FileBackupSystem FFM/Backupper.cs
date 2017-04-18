@@ -24,7 +24,6 @@ namespace FileBackupSystem_FFM
         public Backupper(BackupType backupType, System.Collections.IList sourceDirs, string destDir)
         {
             sourceDirPaths = new string[sourceDirs.Count];
-            //sourceDirs.ToString().CopyTo(0, sourceDirPaths, 0, sourceDirs.Count);
             sourceDirs.CopyTo(sourceDirPaths, 0);
             if (backupType == BackupType.Automatic)
             {
@@ -46,14 +45,27 @@ namespace FileBackupSystem_FFM
         public void MakeBackup(string[] sourceDirs, string destDir)
         {
             destDir += $"\\{DateTime.Now.ToOADate()}";
-            System.IO.Directory.CreateDirectory(destDir);
+            Microsoft.VisualBasic.Devices.Computer directoryBackupper = new Microsoft.VisualBasic.Devices.Computer();
+
             foreach (string directory in sourceDirs)
+            {
+                string tempestDir = $"{destDir}\\{directory.Split('\\').Last()}";
+                System.IO.Directory.CreateDirectory(tempestDir);
+                directoryBackupper.FileSystem.CopyDirectory(directory, tempestDir);
+            }
+
+            //Old code for copying files from sourceDirs
+            //Cannot copy subdirectories from non-zipped files
+            /*foreach (string directory in sourceDirs)
             {
                 foreach (string file in System.IO.Directory.GetFiles(directory.ToString()))
                 {
-                    System.IO.File.Copy($"{file}", $"{destDir}\\{file.Split('\\').Last()}");
+                    string[] tempDirPath;
+                    tempDirPath = file.Split('\\');
+                    System.IO.Directory.CreateDirectory($"{destDir}\\{tempDirPath[tempDirPath.Length - 2]}");
+                    System.IO.File.Copy($"{file}", $"{destDir}\\{tempDirPath[tempDirPath.Length - 2]}\\{tempDirPath.Last()}");
                 }
-            }
+            }*/
         }
         public void UpdateBackup()
         {
