@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Data.SQLite;
 
 namespace FileBackupSystem_FFM
 {
@@ -19,15 +20,24 @@ namespace FileBackupSystem_FFM
     /// </summary>
     public partial class Settings : Window
     {
-        public Settings()
+        //database fields
+        SQLiteConnection connection;
+        SQLiteCommand commander;
+        string command;
+       
+
+        //constructor
+        public Settings(SQLiteConnection connection)
         {
             InitializeComponent();
+            this.connection = connection;
             List<ScheduleTime> schedule = new List<ScheduleTime>();
             comBox_backups.Text = "1";
             comBox_day.Text = "Monday";
             comBox_hours.Text = "00:00";
-        }
 
+        }
+        //methods
         private void btn_cancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -35,7 +45,8 @@ namespace FileBackupSystem_FFM
 
         private void btn_add_Click(object sender, RoutedEventArgs e)
         {
-            lV_schedule.Items.Add(new ScheduleTime() { Day = comBox_day.Text, Time = comBox_hours.Text});
+            lV_schedule.Items.Add(new ScheduleTime() { Day = comBox_day.Text, Time = comBox_hours.Text });
+
         }
 
         private void btn_remove_Click(object sender, RoutedEventArgs e)
@@ -53,6 +64,10 @@ namespace FileBackupSystem_FFM
         private void btn_confirm_Click(object sender, RoutedEventArgs e)
         {
             //Save settings
+            command = $";";
+            commander = new SQLiteCommand(command, connection);
+            commander.ExecuteNonQuery();
+
             this.Close();
         }
     }

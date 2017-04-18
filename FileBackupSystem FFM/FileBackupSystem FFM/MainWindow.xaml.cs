@@ -36,15 +36,32 @@ namespace FileBackupSystem_FFM
             {
                 connection = new SQLiteConnection($"Data Source = {database};Version = 3");
                 connection.Open();
-                command = "create table days(day text primary key);";
+                command = "create table mondays(monday text primary key);";
                 commander = new SQLiteCommand(command, connection);
-                command = "create table time(time integer primary key)";
+                commander.ExecuteNonQuery();
+                command = "create table tuesdays(tuesday text primary key);";
                 commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "create table wednsdays(wednsday text primary key);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "create table thursdays(thursday text primary key);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "create table fridays(friday text primary key);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "create table saturdays(saturday text primary key);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "create table sundays(sunday text primary key);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
 
             }
             catch (SQLiteException)
             {
-                throw;
+              
             }
 
             //Load repository path to txtBox_backupLocation
@@ -52,7 +69,7 @@ namespace FileBackupSystem_FFM
 
         private void btn_schedule_Click(object sender, RoutedEventArgs e)
         {
-            Settings settingsWindow = new Settings();
+            Settings settingsWindow = new Settings(connection);
             settingsWindow.Show();
         }
 
