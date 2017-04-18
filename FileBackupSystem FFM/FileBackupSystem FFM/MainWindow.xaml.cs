@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Forms;
+using System.Data.SQLite;
 
 namespace FileBackupSystem_FFM
 {
@@ -21,9 +22,31 @@ namespace FileBackupSystem_FFM
     /// </summary>
     public partial class MainWindow : Window
     {
+        SQLiteConnection connection;
+        string database = "Backup.db";
+
+        SQLiteCommand commander;
+        string command;
+
+
         public MainWindow()
         {
             InitializeComponent();
+            try
+            {
+                connection = new SQLiteConnection($"Data Source = {database};Version = 3");
+                connection.Open();
+                command = "create table days(day text primary key);";
+                commander = new SQLiteCommand(command, connection);
+                command = "create table time(time integer primary key)";
+                commander = new SQLiteCommand(command, connection);
+
+            }
+            catch (SQLiteException)
+            {
+                throw;
+            }
+
             //Load repository path to txtBox_backupLocation
         }
 
@@ -51,7 +74,7 @@ namespace FileBackupSystem_FFM
 
         private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
         }
 
         private void btn_history_Click(object sender, RoutedEventArgs e)
