@@ -70,6 +70,8 @@ namespace FileBackupSystem_FFM
         private void btn_schedule_Click(object sender, RoutedEventArgs e)
         {
             Settings settingsWindow = new Settings(connection);
+            Schedule schedule = new Schedule();
+            schedule.DateAndTimeCheck();
             settingsWindow.Show();
         }
 
