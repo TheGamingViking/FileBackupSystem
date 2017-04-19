@@ -95,31 +95,48 @@ namespace FileBackupSystem_FFM
         }
         public void MakeBackup(string[] sourceDirs, string destDir, ref string curatedBackup)
         {
-            string tempestDir;
+            bool exceptionEncountered = false;
+            string tempestDir = "";
             destDir += $"\\{DateTime.Now.ToOADate()}";
             Microsoft.VisualBasic.Devices.Computer directoryBackupper = new Microsoft.VisualBasic.Devices.Computer();
             //Creates the static manual backup/restore point
-            foreach (string directory in sourceDirs)
+            try
             {
-                tempestDir = $"{destDir}\\{directory.Split('\\').Last()}";
-                System.IO.Directory.CreateDirectory(tempestDir);
-                directoryBackupper.FileSystem.CopyDirectory(directory, tempestDir);
+                foreach (string directory in sourceDirs)
+                {
+                    tempestDir = $"{destDir}\\{directory.Split('\\').Last()}";
+                    System.IO.Directory.CreateDirectory(tempestDir);
+                    directoryBackupper.FileSystem.CopyDirectory(directory, tempestDir);
+                }
+                //Creates the continously curated backup directory
+                if (directoryBackupper.FileSystem.DirectoryExists(curatedBackup))
+                {
+                    string curatedBackupDirectory = curatedBackup.Split('\\').Last();
+                    directoryBackupper.FileSystem.RenameDirectory(curatedBackup, $"{curatedBackupDirectory.Remove(curatedBackupDirectory.LastIndexOf('_'))}_OldCurated");
+                }
+                destDir += "_Curated";
+                foreach (string directory in sourceDirs)
+                {
+                    tempestDir = $"{destDir}\\{directory.Split('\\').Last()}";
+                    System.IO.Directory.CreateDirectory(tempestDir);
+                    directoryBackupper.FileSystem.CopyDirectory(directory, tempestDir);
+                }
             }
-            //Creates the continously curated backup directory
-            if (directoryBackupper.FileSystem.DirectoryExists(curatedBackup))
+            catch (System.IO.IOException)
             {
-                string curatedBackupDirectory = curatedBackup.Split('\\').Last();
-                directoryBackupper.FileSystem.RenameDirectory(curatedBackup, $"{curatedBackupDirectory.Remove(curatedBackupDirectory.LastIndexOf('_'))}_OldCurated");
+                System.Windows.MessageBox.Show("You cannot back-up a root folder.", "Error Encountered", System.Windows.MessageBoxButton.OK);
+                exceptionEncountered = true;
             }
-            destDir += "_Curated";
-            foreach (string directory in sourceDirs)
+            catch (InvalidOperationException)
             {
-                tempestDir = $"{destDir}\\{directory.Split('\\').Last()}";
-                System.IO.Directory.CreateDirectory(tempestDir);
-                directoryBackupper.FileSystem.CopyDirectory(directory, tempestDir);
+                System.Windows.MessageBox.Show("Invalid operation. Did you try to back-up your back-up repository?\nBack-up must be deleted to continue", "Error Encountered", System.Windows.MessageBoxButton.OK);
+                exceptionEncountered = true;
+                directoryBackupper.FileSystem.DeleteDirectory(tempestDir, Microsoft.VisualBasic.FileIO.DeleteDirectoryOption.DeleteAllContents);
             }
-
-            curatedBackup = destDir;
+            if (!exceptionEncountered)
+            {
+                curatedBackup = destDir;
+            }
 
             //Old code for copying files from sourceDirs
             //Cannot copy subdirectories from non-zipped files
