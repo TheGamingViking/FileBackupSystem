@@ -21,6 +21,10 @@ namespace FileBackupSystem_FFM
     /// </summary>
     public partial class MainWindow : Window
     {
+        //Fields
+        string curatedBackup;
+
+        //Constructor
         public MainWindow()
         {
             InitializeComponent();
@@ -93,7 +97,7 @@ namespace FileBackupSystem_FFM
                 {
                     sourceDirs.Add(checkBox.Content.ToString());
                 }
-                Backupper backup = new Backupper(BackupType.Manual, sourceDirs, txtBox_backupLocation.Text);
+                Backupper backup = new Backupper(BackupType.Manual, sourceDirs, txtBox_backupLocation.Text, ref curatedBackup);
             }
             else
             {
@@ -113,7 +117,17 @@ namespace FileBackupSystem_FFM
             FolderBrowserDialog repositoryBrowser = new FolderBrowserDialog();
             repositoryBrowser.ShowDialog();
             txtBox_backupLocation.Text = repositoryBrowser.SelectedPath;
-            //Save to database
+            //Save to database in close method
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> sourceDirs = new List<string>();
+            foreach (System.Windows.Controls.CheckBox checkBox in listBox.Items)
+            {
+                sourceDirs.Add(checkBox.Content.ToString());
+            }
+            Backupper backup = new Backupper(BackupType.Automatic, sourceDirs, txtBox_backupLocation.Text, ref curatedBackup);
         }
     }
 }

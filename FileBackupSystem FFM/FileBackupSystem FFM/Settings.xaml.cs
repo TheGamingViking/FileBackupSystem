@@ -19,10 +19,12 @@ namespace FileBackupSystem_FFM
     /// </summary>
     public partial class Settings : Window
     {
+        //Fields
+
+        //Constructor
         public Settings()
         {
             InitializeComponent();
-            List<ScheduleTime> schedule = new List<ScheduleTime>();
             comBox_backups.Text = "1";
             comBox_day.Text = "Monday";
             comBox_hours.Text = "00:00";
