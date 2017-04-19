@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Data.Sql;
 
 namespace FileBackupSystem_FFM
 {
@@ -20,11 +21,26 @@ namespace FileBackupSystem_FFM
     public partial class Settings : Window
     {
         //Fields
-
+        List<string> Monday;
+        List<string> Tuesday;
+        List<string> Wednesday;
+        List<string> Thursday;
+        List<string> Friday;
+        List<string> Saturday;
+        List<string> Sunday;
         //Constructor
         public Settings()
         {
             InitializeComponent();
+            //Load database tabels into lists.
+            Monday = new List<string>();
+            Tuesday = new List<string>();
+            Wednesday = new List<string>();
+            Thursday = new List<string>();
+            Friday = new List<string>();
+            Saturday = new List<string>();
+            Sunday = new List<string>();
+
             comBox_backups.Text = "1";
             comBox_day.Text = "Monday";
             comBox_hours.Text = "00:00";
@@ -32,11 +48,42 @@ namespace FileBackupSystem_FFM
 
         private void btn_cancel_Click(object sender, RoutedEventArgs e)
         {
+            Monday.Clear();
+            Tuesday.Clear();
+            Wednesday.Clear();
+            Thursday.Clear();
+            Friday.Clear();
+            Saturday.Clear();
+            Sunday.Clear();
             this.Close();
         }
 
         private void btn_add_Click(object sender, RoutedEventArgs e)
         {
+            switch (comBox_day.Text)
+            {
+                case "Monday":
+                    Monday.Add(comBox_hours.Text);
+                    break;
+                case "Tuesday":
+                    Tuesday.Add(comBox_hours.Text);
+                    break;
+                case "Wednesday":
+                    Wednesday.Add(comBox_hours.Text);
+                    break;
+                case "Thursday":
+                    Thursday.Add(comBox_hours.Text);
+                    break;
+                case "Friday":
+                    Friday.Add(comBox_hours.Text);
+                    break;
+                case "Saturday":
+                    Saturday.Add(comBox_hours.Text);
+                    break;
+                case "Sunday":
+                    Sunday.Add(comBox_hours.Text);
+                    break;
+            }
             lV_schedule.Items.Add(new ScheduleTime() { Day = comBox_day.Text, Time = comBox_hours.Text});
         }
 
@@ -44,6 +91,7 @@ namespace FileBackupSystem_FFM
         {
             try
             {
+                MessageBox.Show(Convert.ToString(lV_schedule.View.GetLocalValueEnumerator().Current));
                 lV_schedule.Items.Remove(lV_schedule.SelectedItem);
             }
             catch (ArgumentOutOfRangeException)
