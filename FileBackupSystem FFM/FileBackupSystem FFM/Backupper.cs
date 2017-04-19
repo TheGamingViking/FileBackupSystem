@@ -78,14 +78,21 @@ namespace FileBackupSystem_FFM
                 foreach (string file in System.IO.Directory.GetFiles(directory))
                 {
                     currentBackupDir += $"\\{file.Split('\\').Last()}";
-                    lastWriteOfFile = System.IO.Directory.GetLastWriteTime(file);
-                    if (lastWriteOfFile > System.IO.File.GetLastWriteTime($"{currentBackupDir}"))
+                    try
                     {
-                        modifiedFilePaths.Add(file);
-                        backupFilesToUpdate.Add(currentBackupDir);
+                        lastWriteOfFile = System.IO.File.GetLastWriteTime(file);
+                        if (lastWriteOfFile > System.IO.File.GetLastWriteTime($"{currentBackupDir}"))
+                        {
+                            modifiedFilePaths.Add(file);
+                            backupFilesToUpdate.Add(currentBackupDir);
 #if DEBUG
-                        System.Windows.MessageBox.Show($"Found a file! {file}\nLast write: {lastWriteOfFile}\nBackupped: {currentBackupDir}\nLast write: {System.IO.Directory.GetLastWriteTime(currentBackupDir)}", "Test", System.Windows.MessageBoxButton.OK);
+                            System.Windows.MessageBox.Show($"Found a file! {file}\nLast write: {lastWriteOfFile}\nBackupped: {currentBackupDir}\nLast write: {System.IO.Directory.GetLastWriteTime(currentBackupDir)}", "Test", System.Windows.MessageBoxButton.OK);
 #endif
+                        }
+                    }
+                    catch (System.IO.PathTooLongException)
+                    {
+                        System.Windows.MessageBox.Show("The specified path was too long, automatic back-up could not be completed.", "Error Encountered", System.Windows.MessageBoxButton.OK);
                     }
                 }
             }
@@ -124,11 +131,11 @@ namespace FileBackupSystem_FFM
             }
             catch (System.IO.DirectoryNotFoundException)
             {
-                System.Windows.MessageBox.Show("The directory you tried to back-up was invalid or does not exist", "Error encountered", System.Windows.MessageBoxButton.OK);
+                System.Windows.MessageBox.Show("The directory you tried to back-up was invalid or does not exist", "Error Encountered", System.Windows.MessageBoxButton.OK);
             }
             catch (System.IO.IOException)
             {
-                System.Windows.MessageBox.Show("Something went wrong. Did you try to backup a rootfolder?", "Error Encountered", System.Windows.MessageBoxButton.OK);
+                System.Windows.MessageBox.Show("Something went wrong. Did you try to back-up a rootfolder?", "Error Encountered", System.Windows.MessageBoxButton.OK);
                 exceptionEncountered = true;
             }
             catch (InvalidOperationException)
