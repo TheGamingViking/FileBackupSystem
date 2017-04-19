@@ -18,6 +18,7 @@ namespace FileBackupSystem_FFM
         //Fields
         string[] sourceDirPaths;
         List<string> modifiedFilePaths;
+        List<string> backupFilesToUpdate;
 
         //Properties
 
@@ -25,8 +26,9 @@ namespace FileBackupSystem_FFM
         public Backupper(BackupType backupType, System.Collections.IList sourceDirs, string destDir, ref string curatedBackup)
         {
             sourceDirPaths = new string[sourceDirs.Count];
-            modifiedFilePaths = new List<string>();
             sourceDirs.CopyTo(sourceDirPaths, 0);
+            modifiedFilePaths = new List<string>();
+            backupFilesToUpdate = new List<string>();
             if (backupType == BackupType.Automatic)
             {
                 FindChanges(sourceDirPaths, destDir, curatedBackup);
@@ -35,7 +37,6 @@ namespace FileBackupSystem_FFM
             if (backupType == BackupType.Manual)
             {
                 MakeBackup(sourceDirPaths, destDir, ref curatedBackup);
-                UpdateBackup();
             }
         }
 
@@ -81,6 +82,7 @@ namespace FileBackupSystem_FFM
                     if (lastWriteOfFile > System.IO.File.GetLastWriteTime($"{currentBackupDir}"))
                     {
                         modifiedFilePaths.Add(file);
+                        backupFilesToUpdate.Add(currentBackupDir);
 #if DEBUG
                         System.Windows.MessageBox.Show($"Found a file! {file}\nLast write: {lastWriteOfFile}\nBackupped: {currentBackupDir}\nLast write: {System.IO.Directory.GetLastWriteTime(currentBackupDir)}", "Test", System.Windows.MessageBoxButton.OK);
 #endif
@@ -96,7 +98,20 @@ namespace FileBackupSystem_FFM
             string tempestDir;
             destDir += $"\\{DateTime.Now.ToOADate()}";
             Microsoft.VisualBasic.Devices.Computer directoryBackupper = new Microsoft.VisualBasic.Devices.Computer();
-
+            //Creates the static manual backup/restore point
+            foreach (string directory in sourceDirs)
+            {
+                tempestDir = $"{destDir}\\{directory.Split('\\').Last()}";
+                System.IO.Directory.CreateDirectory(tempestDir);
+                directoryBackupper.FileSystem.CopyDirectory(directory, tempestDir);
+            }
+            //Creates the continously curated backup directory
+            if (directoryBackupper.FileSystem.DirectoryExists(curatedBackup))
+            {
+                string curatedBackupDirectory = curatedBackup.Split('\\').Last();
+                directoryBackupper.FileSystem.RenameDirectory(curatedBackup, $"{curatedBackupDirectory.Remove(curatedBackupDirectory.LastIndexOf('_'))}_OldCurated");
+            }
+            destDir += "_Curated";
             foreach (string directory in sourceDirs)
             {
                 tempestDir = $"{destDir}\\{directory.Split('\\').Last()}";
@@ -121,7 +136,28 @@ namespace FileBackupSystem_FFM
         }
         public void UpdateBackup()
         {
+            Microsoft.VisualBasic.Devices.Computer updater = new Microsoft.VisualBasic.Devices.Computer();
 
+            for (int i = 0; i < backupFilesToUpdate.Count; i++)
+            {
+                try
+                {
+                    updater.FileSystem.DeleteFile(backupFilesToUpdate.ElementAt(i));
+                }
+                catch (System.IO.FileNotFoundException)
+                {
+                    Console.WriteLine($"File: {backupFilesToUpdate.ElementAt(i)} not found in backup directory. Exception handled.");
+                }
+                if (updater.FileSystem.DirectoryExists(backupFilesToUpdate.ElementAt(i).Remove(backupFilesToUpdate.ElementAt(i).LastIndexOf('\\'))))
+                {
+                    updater.FileSystem.CopyFile(modifiedFilePaths.ElementAt(i), backupFilesToUpdate.ElementAt(i));
+                }
+                else
+                {
+                    updater.FileSystem.CreateDirectory(backupFilesToUpdate.ElementAt(i).Remove(backupFilesToUpdate.ElementAt(i).LastIndexOf('\\')));
+                    updater.FileSystem.CopyFile(modifiedFilePaths.ElementAt(i), backupFilesToUpdate.ElementAt(i));
+                }
+            }
         }
     }
 }
