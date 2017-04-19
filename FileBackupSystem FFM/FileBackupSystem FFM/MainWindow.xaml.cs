@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Forms;
+using System.Data.SQLite;
 
 namespace FileBackupSystem_FFM
 {
@@ -22,18 +23,54 @@ namespace FileBackupSystem_FFM
     public partial class MainWindow : Window
     {
         //Fields
+        SQLiteConnection connection;
+        string database = "Backup.db";
         string curatedBackup;
+        SQLiteCommand commander;
+        string command;
 
         //Constructor
         public MainWindow()
         {
             InitializeComponent();
+            try
+            {
+                connection = new SQLiteConnection($"Data Source = {database};Version = 3");
+                connection.Open();
+                command = "create table mondays(monday text primary key);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "create table tuesdays(tuesday text primary key);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "create table wednsdays(wednsday text primary key);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "create table thursdays(thursday text primary key);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "create table fridays(friday text primary key);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "create table saturdays(saturday text primary key);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "create table sundays(sunday text primary key);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+
+            }
+            catch (SQLiteException)
+            {
+              
+            }
+
             //Load repository path to txtBox_backupLocation
         }
 
         private void btn_schedule_Click(object sender, RoutedEventArgs e)
         {
-            Settings settingsWindow = new Settings();
+            Settings settingsWindow = new Settings(connection);
             Schedule schedule = new Schedule();
             schedule.DateAndTimeCheck();
             settingsWindow.Show();
@@ -57,7 +94,7 @@ namespace FileBackupSystem_FFM
 
         private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
         }
 
         private void btn_history_Click(object sender, RoutedEventArgs e)
