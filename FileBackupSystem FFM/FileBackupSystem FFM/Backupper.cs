@@ -122,9 +122,13 @@ namespace FileBackupSystem_FFM
                     directoryBackupper.FileSystem.CopyDirectory(directory, tempestDir);
                 }
             }
+            catch (System.IO.DirectoryNotFoundException)
+            {
+                System.Windows.MessageBox.Show("The directory you tried to back-up was invalid or does not exist", "Error encountered", System.Windows.MessageBoxButton.OK);
+            }
             catch (System.IO.IOException)
             {
-                System.Windows.MessageBox.Show("You cannot back-up a root folder.", "Error Encountered", System.Windows.MessageBoxButton.OK);
+                System.Windows.MessageBox.Show("Something went wrong. Did you try to backup a rootfolder?", "Error Encountered", System.Windows.MessageBoxButton.OK);
                 exceptionEncountered = true;
             }
             catch (InvalidOperationException)
