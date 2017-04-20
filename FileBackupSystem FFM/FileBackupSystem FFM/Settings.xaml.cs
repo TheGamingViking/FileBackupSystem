@@ -24,30 +24,38 @@ namespace FileBackupSystem_FFM
         SQLiteConnection connection;
         SQLiteCommand commander;
         string command;
+        SQLiteDataReader reader;
         //fields
-        List<string> Monday;
-        List<string> Tuesday;
-        List<string> Wednesday;
-        List<string> Thursday;
-        List<string> Friday;
-        List<string> Saturday;
-        List<string> Sunday;
+        List<ScheduleTime> schedule;
+        readonly List<string> weekDays;
         //constructor
-        public Settings(SQLiteConnection connection)
+        public Settings(SQLiteConnection connection, List<string> weekDays)
         {
             InitializeComponent();
-            this.connection = connection;
-            List<ScheduleTime> schedule = new List<ScheduleTime>();
+            this.weekDays = weekDays;
             //Load database tabels into lists.
-            Monday = new List<string>();
-            Tuesday = new List<string>();
-            Wednesday = new List<string>();
-            Thursday = new List<string>();
-            Friday = new List<string>();
-            Saturday = new List<string>();
-            Sunday = new List<string>();
-
-            comBox_backups.Text = "1";
+            
+            this.connection = connection;
+            schedule = new List<ScheduleTime>();
+            
+            foreach (string day in weekDays)
+            {
+                command = $"select * from {day};";
+                commander = new SQLiteCommand(command, connection);
+                reader = commander.ExecuteReader();
+                while (reader.Read())
+                {
+                    schedule.Add(new ScheduleTime() { Day = day, Time = (string)reader[0] });
+                    lV_schedule.Items.Add(schedule.Last());
+                }
+            }
+            command = $"select * from BackupsToKeep;";
+            commander = new SQLiteCommand(command, connection);
+            reader = commander.ExecuteReader();
+            while (reader.Read())
+            {
+                comBox_backups.Text = Convert.ToString(reader[0]);
+            }
             comBox_day.Text = "Monday";
             comBox_hours.Text = "00:00";
 
@@ -55,50 +63,28 @@ namespace FileBackupSystem_FFM
         //methods
         private void btn_cancel_Click(object sender, RoutedEventArgs e)
         {
-            Monday.Clear();
-            Tuesday.Clear();
-            Wednesday.Clear();
-            Thursday.Clear();
-            Friday.Clear();
-            Saturday.Clear();
-            Sunday.Clear();
+            schedule.Clear();
             this.Close();
         }
 
         private void btn_add_Click(object sender, RoutedEventArgs e)
         {
-            switch (comBox_day.Text)
-            {
-                case "Monday":
-                    Monday.Add(comBox_hours.Text);
-                    break;
-                case "Tuesday":
-                    Tuesday.Add(comBox_hours.Text);
-                    break;
-                case "Wednesday":
-                    Wednesday.Add(comBox_hours.Text);
-                    break;
-                case "Thursday":
-                    Thursday.Add(comBox_hours.Text);
-                    break;
-                case "Friday":
-                    Friday.Add(comBox_hours.Text);
-                    break;
-                case "Saturday":
-                    Saturday.Add(comBox_hours.Text);
-                    break;
-                case "Sunday":
-                    Sunday.Add(comBox_hours.Text);
-                    break;
-            }
-            lV_schedule.Items.Add(new ScheduleTime() { Day = comBox_day.Text, Time = comBox_hours.Text});
+            schedule.Add(new ScheduleTime() { Day = comBox_day.Text, Time = comBox_hours.Text });
+            lV_schedule.Items.Add(schedule.Last());
         }
 
         private void btn_remove_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                MessageBox.Show(Convert.ToString(lV_schedule.View.GetLocalValueEnumerator().Current));
+                foreach (ScheduleTime item in schedule)
+                {
+                    if (item.Equals(lV_schedule.SelectedItem))
+                    {
+                        schedule.Remove(item);
+                        break;
+                    }
+                }
                 lV_schedule.Items.Remove(lV_schedule.SelectedItem);
             }
             catch (ArgumentOutOfRangeException)
@@ -110,9 +96,37 @@ namespace FileBackupSystem_FFM
         private void btn_confirm_Click(object sender, RoutedEventArgs e)
         {
             //Save settings
-            command = $";";
+            foreach (string day in weekDays)
+            {
+                command = $"select * from {day};";
+                commander = new SQLiteCommand(command, connection);
+                reader = commander.ExecuteReader();
+                while (reader.Read())
+                {
+                    ScheduleTime temp = new ScheduleTime { Day = day, Time = (string)reader[0] };
+                    if (schedule.Contains(temp))
+                    {
+                        schedule.Remove(temp);
+                    }
+                    else
+                    {
+                        command = $"delete from {day} where time = '{temp.Time}';";
+                        commander = new SQLiteCommand(command, connection);
+                        commander.ExecuteNonQuery();
+                        schedule.Remove(temp);
+                    }
+                }
+            }
+            foreach (ScheduleTime item in schedule)
+            {
+                command = $"insert into {item.Day} values('{item.Time}');";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+            }
+            command = $"update BackupsToKeep set number = {comBox_backups.Text};";
             commander = new SQLiteCommand(command, connection);
             commander.ExecuteNonQuery();
+
 
             this.Close();
         }

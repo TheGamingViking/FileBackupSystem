@@ -23,11 +23,15 @@ namespace FileBackupSystem_FFM
     public partial class MainWindow : Window
     {
         //Fields
+        Settings settingsWindow;
+        History historyWindow;
+        List<string> sourceDirs;
         SQLiteConnection connection;
         string database = "Backup.db";
         string curatedBackup;
         SQLiteCommand commander;
         string command;
+        readonly List<string> weekDays = new List<string>() { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 
         //Constructor
         public MainWindow()
@@ -37,32 +41,37 @@ namespace FileBackupSystem_FFM
             {
                 connection = new SQLiteConnection($"Data Source = {database};Version = 3");
                 connection.Open();
-                command = "create table mondays(monday text primary key);";
+                command = "create table Monday(time text primary key);";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
-                command = "create table tuesdays(tuesday text primary key);";
+                command = "create table Tuesday(time text primary key);";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
-                command = "create table wednsdays(wednsday text primary key);";
+                command = "create table Wednesday(time text primary key);";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
-                command = "create table thursdays(thursday text primary key);";
+                command = "create table Thursday(time text primary key);";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
-                command = "create table fridays(friday text primary key);";
+                command = "create table Friday(time text primary key);";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
-                command = "create table saturdays(saturday text primary key);";
+                command = "create table Saturday(time text primary key);";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
-                command = "create table sundays(sunday text primary key);";
+                command = "create table Sunday(time text primary key);";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
-
+                command = "create table BackupsToKeep(number integer primary key);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "insert into BackupsToKeep(number) values (2);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
             }
             catch (SQLiteException)
             {
-              
+                Console.WriteLine("An exception of SQLiteException occurred.");
             }
 
             //Load repository path to txtBox_backupLocation
@@ -70,10 +79,21 @@ namespace FileBackupSystem_FFM
 
         private void btn_schedule_Click(object sender, RoutedEventArgs e)
         {
-            Settings settingsWindow = new Settings(connection);
-            Schedule schedule = new Schedule();
-            schedule.DateAndTimeCheck();
-            settingsWindow.Show();
+            try
+            {
+                settingsWindow.Close();
+            }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("No Settings.cs to close. NullReferenceException handled.");
+            }
+            finally
+            {
+                settingsWindow = new Settings(connection, weekDays);
+                Schedule schedule = new Schedule(sourceDirs, txtBox_backupLocation.Text, curatedBackup, weekDays, connection);
+                schedule.DateAndTimeCheck();
+                settingsWindow.Show();
+            }
         }
 
         private void txtBox_filepathInput_TextChanged(object sender, TextChangedEventArgs e)
@@ -99,8 +119,19 @@ namespace FileBackupSystem_FFM
 
         private void btn_history_Click(object sender, RoutedEventArgs e)
         {
-            History historyWindow = new History();
-            historyWindow.Show();
+            try
+            {
+                historyWindow.Close();
+            }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("No Historycs to close. NullReferenceException handled.");
+            }
+            finally
+            {
+                historyWindow = new History();
+                historyWindow.Show();
+            }
         }
 
         private void checkBox_Checked(object sender, RoutedEventArgs e)
@@ -161,7 +192,7 @@ namespace FileBackupSystem_FFM
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            List<string> sourceDirs = new List<string>();
+            sourceDirs = new List<string>();
             foreach (System.Windows.Controls.CheckBox checkBox in listBox.Items)
             {
                 sourceDirs.Add(checkBox.Content.ToString());
