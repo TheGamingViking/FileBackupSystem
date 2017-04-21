@@ -20,6 +20,7 @@ namespace FileBackupSystem_FFM
         string[] sourceDirPaths;
         List<string> modifiedFilePaths;
         List<string> backupFilesToUpdate;
+        string temp;
         //Database fields
         SQLiteConnection connection;
         string command;
@@ -81,8 +82,10 @@ namespace FileBackupSystem_FFM
                         }
                     }
                 }
+                temp = currentBackupDir;
                 foreach (string file in System.IO.Directory.GetFiles(directory))
                 {
+                    currentBackupDir = temp;
                     currentBackupDir += $"\\{file.Split('\\').Last()}";
                     try
                     {

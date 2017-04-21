@@ -122,8 +122,6 @@ namespace FileBackupSystem_FFM
             finally
             {
                 settingsWindow = new Settings(connection, weekDays);
-                Schedule schedule = new Schedule(sourceDirs, txtBox_backupLocation.Text, curatedBackup, weekDays, connection);
-                schedule.DateAndTimeCheck();
                 settingsWindow.Show();
             }
         }
@@ -200,7 +198,7 @@ namespace FileBackupSystem_FFM
                 }
                 foreach (System.Windows.Controls.CheckBox item in toRemove)
                 {
-                    command = $"delete from SourceDirPaths where path = {item.Content}";
+                    command = $"delete from SourceDirPaths where path = '{item.Content}'";
                     commander = new SQLiteCommand(command, connection);
                     commander.ExecuteNonQuery();
                     listBox.Items.Remove(item);
@@ -247,14 +245,14 @@ namespace FileBackupSystem_FFM
             //Save to database in close method
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void checkBox_Checked_1(object sender, RoutedEventArgs e)
         {
-            sourceDirs = new List<string>();
             foreach (System.Windows.Controls.CheckBox checkBox in listBox.Items)
             {
                 sourceDirs.Add(checkBox.Content.ToString());
             }
-            Backupper backup = new Backupper(BackupType.Automatic, sourceDirs, txtBox_backupLocation.Text, ref curatedBackup, connection);
+            Schedule schedule = new Schedule(sourceDirs, txtBox_backupLocation.Text, curatedBackup, weekDays, connection);
+            schedule.DateAndTimeCheck();
         }
     }
 }
