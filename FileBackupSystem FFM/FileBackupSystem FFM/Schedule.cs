@@ -20,6 +20,7 @@ namespace FileBackupSystem_FFM
         string curatedBackup;
         string destDir;
         readonly List<string> weekDays;
+        System.Timers.Timer timer;
 
         public Schedule(System.Collections.IList sourceDirs, string destDir, string curatedBackup, List<string> weekDays, SQLiteConnection connection)
         {
@@ -35,7 +36,7 @@ namespace FileBackupSystem_FFM
             Dictionary <string, List<string>> schedule = new Dictionary<string, List<string>>() ;
             DateTime conversion;
             string temp;
-            int x = 5;
+            int x = 2;
 
             
             foreach (string day in weekDays)
@@ -88,10 +89,14 @@ namespace FileBackupSystem_FFM
             NextHour = NextHour.AddHours(1);
             TimeSpan TilWholeHour = NextHour - current;
             //Give the timer the calculated time so that it can call the event at the next whole hour.
-            var timer = new System.Timers.Timer(TilWholeHour.TotalMilliseconds);
+            if (timer!=null)
+            {
+                timer.Dispose();
+            }
+            timer = new System.Timers.Timer(TilWholeHour.TotalMilliseconds);
             timer.Elapsed += TimerEvent;
             timer.Enabled = true;
-            //test.
+            
         }
         private void TimerEvent(Object source, System.Timers.ElapsedEventArgs e)
         {

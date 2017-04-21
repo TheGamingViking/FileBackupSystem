@@ -244,9 +244,10 @@ namespace FileBackupSystem_FFM
             txtBox_backupLocation.Text = repositoryBrowser.SelectedPath;
             //Save to database in close method
         }
-
+        
         private void checkBox_Checked_1(object sender, RoutedEventArgs e)
         {
+            sourceDirs = new List<string>();
             foreach (System.Windows.Controls.CheckBox checkBox in listBox.Items)
             {
                 sourceDirs.Add(checkBox.Content.ToString());

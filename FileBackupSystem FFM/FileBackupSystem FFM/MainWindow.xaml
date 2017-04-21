@@ -20,8 +20,9 @@
         <Label x:Name="label" Content="Backup location" HorizontalAlignment="Left" Margin="10,272,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label1" Content="Folders to backup" HorizontalAlignment="Left" Margin="10,46,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label2" Content="Folder location" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top"/>
-        <CheckBox x:Name="checkBox" HorizontalAlignment="Left" Margin="215,221,0,0" VerticalAlignment="Top" Width="75" Checked="checkBox_Checked_1" FontSize="10">
-            <TextBlock Text ="Enable Auto Backup" TextWrapping ="Wrap"/>
+        <CheckBox x:Name="checkBox" HorizontalAlignment="Left" Margin="215,223,0,0" VerticalAlignment="Top" Checked="checkBox_Checked_1">
+            <TextBlock Text="Enable Auto Backup" TextWrapping="Wrap" FontSize="10"/>
         </CheckBox>
+
     </Grid>
 </Window>
