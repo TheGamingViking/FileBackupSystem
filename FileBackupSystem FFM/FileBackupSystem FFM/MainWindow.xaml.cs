@@ -26,12 +26,14 @@ namespace FileBackupSystem_FFM
         Settings settingsWindow;
         History historyWindow;
         List<string> sourceDirs;
+        string curatedBackup;
+        readonly List<string> weekDays = new List<string>() { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+        //Database Fields
+        SQLiteCommand commander;
+        SQLiteDataReader reader;
+        string command;
         SQLiteConnection connection;
         string database = "Backup.db";
-        string curatedBackup;
-        SQLiteCommand commander;
-        string command;
-        readonly List<string> weekDays = new List<string>() { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 
         //Constructor
         public MainWindow()
@@ -65,18 +67,32 @@ namespace FileBackupSystem_FFM
                 command = "create table BackupsToKeep(number integer primary key);";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
+                command = "create table SourceDirPaths(path text primary key);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "create table RepositoryPath(path text primary key);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
                 command = "insert into BackupsToKeep(number) values (2);";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
             }
             catch (SQLiteException)
             {
-                Console.WriteLine("An exception of SQLiteException occurred.");
+                Console.WriteLine("An exception of SQLiteException occurred. Exception handled.");
             }
 
             //Load repository path to txtBox_backupLocation
+            command = "select * from RepositoryPath;";
+            commander = new SQLiteCommand(command, connection);
+            reader = commander.ExecuteReader();
+            while (reader.Read())
+            {
+                txtBox_backupLocation.Text = (string)reader[0];
+            }
         }
 
+        //Methods
         private void btn_schedule_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -103,8 +119,11 @@ namespace FileBackupSystem_FFM
 
         private void btn_add_Click(object sender, RoutedEventArgs e)
         {
-            if (txtBox_filepathInput.Text != "" || txtBox_filepathInput.Text != " ")
+            if (txtBox_filepathInput.Text.Length < 248 && txtBox_filepathInput.Text.Length >= 4)
             {
+                command = $"insert into table SourceDirPaths values({txtBox_filepathInput.Text})";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
                 System.Windows.Controls.CheckBox checkbox = new System.Windows.Controls.CheckBox();
                 checkbox.Content = txtBox_filepathInput.Text;
                 listBox.Items.Add(checkbox);
@@ -125,11 +144,11 @@ namespace FileBackupSystem_FFM
             }
             catch (NullReferenceException)
             {
-                Console.WriteLine("No Historycs to close. NullReferenceException handled.");
+                Console.WriteLine("No History.cs to close. NullReferenceException handled.");
             }
             finally
             {
-                historyWindow = new History();
+                historyWindow = new History(curatedBackup, connection, txtBox_backupLocation.Text);
                 historyWindow.Show();
             }
         }
@@ -158,6 +177,9 @@ namespace FileBackupSystem_FFM
                 }
                 foreach (System.Windows.Controls.CheckBox item in toRemove)
                 {
+                    command = $"delete from SourceDirPaths where path = {item.Content}";
+                    commander = new SQLiteCommand(command, connection);
+                    commander.ExecuteNonQuery();
                     listBox.Items.Remove(item);
                 }
                 toRemove.Clear();
@@ -166,6 +188,16 @@ namespace FileBackupSystem_FFM
                 foreach (System.Windows.Controls.CheckBox checkBox in listBox.Items)
                 {
                     sourceDirs.Add(checkBox.Content.ToString());
+                }
+                command = $"select * from RepositoryPath;";
+                commander = new SQLiteCommand(command, connection);
+                reader = commander.ExecuteReader();
+                while (reader.Read())
+                {
+                    if ((string)reader[0] != txtBox_backupLocation.Text)
+                    {
+                        command = $"update RepositoryPath set path = {txtBox_backupLocation.Text}";
+                    }
                 }
                 Backupper backup = new Backupper(BackupType.Manual, sourceDirs, txtBox_backupLocation.Text, ref curatedBackup);
             }

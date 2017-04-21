@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Data.SQLite;
 
 namespace FileBackupSystem_FFM
 {
@@ -19,12 +20,36 @@ namespace FileBackupSystem_FFM
     /// </summary>
     public partial class History : Window
     {
+        //Fields
+        string curatedBackup;
+        string destDir;
+        string temp;
 
-        public History()
+        //Database Fields
+        SQLiteConnection connection;
+        string command;
+        SQLiteCommand commander;
+        SQLiteDataReader reader;
+
+        //Constructor
+        public History(string curatedBackup, SQLiteConnection connection, string destDir)
         {
             InitializeComponent();
+            this.curatedBackup = curatedBackup;
+            this.connection = connection;
+            this.destDir = destDir;
+            //Add backups to listBox
+            command = $"select * from SourceDirPaths;";
+            commander = new SQLiteCommand(command, connection);
+            reader = commander.ExecuteReader();
+            while (reader.Read())
+            {
+                temp = (string)reader[0];
+                listBox.Items.Add(new SourceDirectory() { Name = DateTime.FromOADate(Convert.ToDouble(temp.Split('\\').Last().TrimEnd('_'))).ToString(), Path = temp });
+            }
         }
 
+        //Methods
         private void btn_close_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -44,5 +69,11 @@ namespace FileBackupSystem_FFM
         {
 
         }
+    }
+
+    public class SourceDirectory
+    {
+        public string Name { get; set; }
+        public string Path { get; set; }
     }
 }
