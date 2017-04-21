@@ -24,6 +24,7 @@ namespace FileBackupSystem_FFM
         string curatedBackup;
         string destDir;
         string temp;
+        List<BackupDirectory> backupDirectories;
 
         //Database Fields
         SQLiteConnection connection;
@@ -38,15 +39,22 @@ namespace FileBackupSystem_FFM
             this.curatedBackup = curatedBackup;
             this.connection = connection;
             this.destDir = destDir;
+            backupDirectories = new List<BackupDirectory>();
             //Add backups to listBox
-            command = $"select * from SourceDirPaths;";
+            command = $"select * from BackupDirectories;";
             commander = new SQLiteCommand(command, connection);
             reader = commander.ExecuteReader();
             while (reader.Read())
             {
-                temp = (string)reader[0];
-                listBox.Items.Add(new SourceDirectory() { Name = DateTime.FromOADate(Convert.ToDouble(temp.Split('\\').Last().TrimEnd('_'))).ToString(), Path = temp });
+                temp = (reader[0] as string).Split('\\').Last();
+                if (temp.Contains("Curated"))
+                {
+                    temp = temp.Remove(temp.LastIndexOf('_'));
+                }
+                backupDirectories.Add(new BackupDirectory() { Name = DateTime.FromOADate(Convert.ToDouble(temp)).ToString(), Path = temp });
             }
+            listBox.ItemsSource = backupDirectories;
+            listBox.DisplayMemberPath = "Name";
         }
 
         //Methods
@@ -71,7 +79,7 @@ namespace FileBackupSystem_FFM
         }
     }
 
-    public class SourceDirectory
+    public class BackupDirectory
     {
         public string Name { get; set; }
         public string Path { get; set; }

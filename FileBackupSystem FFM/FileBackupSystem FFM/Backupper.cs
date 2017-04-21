@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Data.SQLite;
 
 namespace FileBackupSystem_FFM
 {
@@ -19,12 +20,17 @@ namespace FileBackupSystem_FFM
         string[] sourceDirPaths;
         List<string> modifiedFilePaths;
         List<string> backupFilesToUpdate;
+        //Database fields
+        SQLiteConnection connection;
+        string command;
+        SQLiteCommand commander;
 
         //Properties
 
         //Constructor
-        public Backupper(BackupType backupType, System.Collections.IList sourceDirs, string destDir, ref string curatedBackup)
+        public Backupper(BackupType backupType, System.Collections.IList sourceDirs, string destDir, ref string curatedBackup, SQLiteConnection connection)
         {
+            this.connection = connection;
             sourceDirPaths = new string[sourceDirs.Count];
             sourceDirs.CopyTo(sourceDirPaths, 0);
             modifiedFilePaths = new List<string>();
@@ -115,11 +121,17 @@ namespace FileBackupSystem_FFM
                     System.IO.Directory.CreateDirectory(tempestDir);
                     directoryBackupper.FileSystem.CopyDirectory(directory, tempestDir);
                 }
+                command = $"insert into BackupDirectories values('{destDir}');";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
                 //Creates the continously curated backup directory
                 if (directoryBackupper.FileSystem.DirectoryExists(curatedBackup))
                 {
                     string curatedBackupDirectory = curatedBackup.Split('\\').Last();
                     directoryBackupper.FileSystem.RenameDirectory(curatedBackup, $"{curatedBackupDirectory.Remove(curatedBackupDirectory.LastIndexOf('_'))}_OldCurated");
+                    command = $"update BackupDirectories set path = '{curatedBackupDirectory.Remove(curatedBackupDirectory.LastIndexOf('_'))}_OldCurated' where path = '{curatedBackup}'";
+                    commander = new SQLiteCommand(command, connection);
+                    commander.ExecuteNonQuery();
                 }
                 destDir += "_Curated";
                 foreach (string directory in sourceDirs)
@@ -128,6 +140,9 @@ namespace FileBackupSystem_FFM
                     System.IO.Directory.CreateDirectory(tempestDir);
                     directoryBackupper.FileSystem.CopyDirectory(directory, tempestDir);
                 }
+                command = $"insert into BackupDirectories values('{destDir}');";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
             }
             catch (System.IO.DirectoryNotFoundException)
             {

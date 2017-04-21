@@ -72,7 +72,7 @@ namespace FileBackupSystem_FFM
                         if (conversion < DateTime.Now && conversion.AddMinutes(x) > DateTime.Now)
                         {
                             //Run auto backup
-                            Backupper auto = new Backupper(BackupType.Automatic, sourceDirs, destDir, ref curatedBackup);
+                            Backupper auto = new Backupper(BackupType.Automatic, sourceDirs, destDir, ref curatedBackup, connection);
                         }
                     }
                 }

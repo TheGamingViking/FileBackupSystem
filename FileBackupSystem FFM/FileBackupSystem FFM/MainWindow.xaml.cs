@@ -73,6 +73,12 @@ namespace FileBackupSystem_FFM
                 command = "create table RepositoryPath(path text primary key);";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
+                command = "create table BackupDirectories(path text primary key);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "insert into RepositoryPath values('Enter repository');";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
                 command = "insert into BackupsToKeep(number) values (2);";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
@@ -89,6 +95,16 @@ namespace FileBackupSystem_FFM
             while (reader.Read())
             {
                 txtBox_backupLocation.Text = (string)reader[0];
+            }
+            //Load source directories to listBox
+            command = "select * from SourceDirPaths";
+            commander = new SQLiteCommand(command, connection);
+            reader = commander.ExecuteReader();
+            while (reader.Read())
+            {
+                System.Windows.Controls.CheckBox checkbox = new System.Windows.Controls.CheckBox();
+                checkbox.Content = (string)reader[0];
+                listBox.Items.Add(checkbox);
             }
         }
 
@@ -121,12 +137,19 @@ namespace FileBackupSystem_FFM
         {
             if (txtBox_filepathInput.Text.Length < 248 && txtBox_filepathInput.Text.Length >= 4)
             {
-                command = $"insert into table SourceDirPaths values({txtBox_filepathInput.Text})";
-                commander = new SQLiteCommand(command, connection);
-                commander.ExecuteNonQuery();
-                System.Windows.Controls.CheckBox checkbox = new System.Windows.Controls.CheckBox();
-                checkbox.Content = txtBox_filepathInput.Text;
-                listBox.Items.Add(checkbox);
+                try
+                {
+                    command = $"insert into SourceDirPaths values('{txtBox_filepathInput.Text}')";
+                    commander = new SQLiteCommand(command, connection);
+                    commander.ExecuteNonQuery();
+                    System.Windows.Controls.CheckBox checkbox = new System.Windows.Controls.CheckBox();
+                    checkbox.Content = txtBox_filepathInput.Text;
+                    listBox.Items.Add(checkbox);
+                }
+                catch (SQLiteException)
+                {
+                    Console.WriteLine("Unique constraint failed. SourceDirPath already exists. Exception handled.");
+                }
             }
             txtBox_filepathInput.Clear();
         }
@@ -196,10 +219,12 @@ namespace FileBackupSystem_FFM
                 {
                     if ((string)reader[0] != txtBox_backupLocation.Text)
                     {
-                        command = $"update RepositoryPath set path = {txtBox_backupLocation.Text}";
+                        command = $"update RepositoryPath set path = '{txtBox_backupLocation.Text}'";
+                        commander = new SQLiteCommand(command, connection);
+                        commander.ExecuteNonQuery();
                     }
                 }
-                Backupper backup = new Backupper(BackupType.Manual, sourceDirs, txtBox_backupLocation.Text, ref curatedBackup);
+                Backupper backup = new Backupper(BackupType.Manual, sourceDirs, txtBox_backupLocation.Text, ref curatedBackup, connection);
             }
             else
             {
@@ -229,7 +254,7 @@ namespace FileBackupSystem_FFM
             {
                 sourceDirs.Add(checkBox.Content.ToString());
             }
-            Backupper backup = new Backupper(BackupType.Automatic, sourceDirs, txtBox_backupLocation.Text, ref curatedBackup);
+            Backupper backup = new Backupper(BackupType.Automatic, sourceDirs, txtBox_backupLocation.Text, ref curatedBackup, connection);
         }
     }
 }
