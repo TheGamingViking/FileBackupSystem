@@ -91,7 +91,7 @@ namespace FileBackupSystem_FFM
                 command = "insert into CuratedBackupPath values('path');";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
-                command = "insert into AutoBackupEnabled values('true');";
+                command = "insert into AutoBackupEnabled values('false');";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
             }
@@ -282,6 +282,13 @@ namespace FileBackupSystem_FFM
                 command = "update AutoBackupEnabled set state = 'true';";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
+                sourceDirs = new List<string>();
+                foreach (System.Windows.Controls.CheckBox checkBox in listBox.Items)
+                {
+                    sourceDirs.Add(checkBox.Content.ToString());
+                }
+                Schedule schedule = new Schedule(sourceDirs, txtBox_backupLocation.Text, curatedBackup, weekDays, connection);
+                schedule.DateAndTimeCheck();
             }
             else
             {
@@ -289,13 +296,6 @@ namespace FileBackupSystem_FFM
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
             }
-            sourceDirs = new List<string>();
-            foreach (System.Windows.Controls.CheckBox checkBox in listBox.Items)
-            {
-                sourceDirs.Add(checkBox.Content.ToString());
-            }
-            Schedule schedule = new Schedule(sourceDirs, txtBox_backupLocation.Text, curatedBackup, weekDays, connection);
-            schedule.DateAndTimeCheck();
         }
     }
 }
