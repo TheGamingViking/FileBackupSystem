@@ -79,13 +79,19 @@ namespace FileBackupSystem_FFM
                 command = "create table CuratedBackupPath(path text primary key);";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
+                command = "create table AutoBackupEnabled(state boolean primary key);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
                 command = "insert into RepositoryPath values('Enter repository');";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
-                command = "insert into BackupsToKeep values (2);";
+                command = "insert into BackupsToKeep values(2);";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
                 command = "insert into CuratedBackupPath values('path');";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "insert into AutoBackupEnabled values('true');";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
             }
@@ -113,12 +119,22 @@ namespace FileBackupSystem_FFM
                 checkbox.IsChecked = true;
                 listBox.Items.Add(checkbox);
             }
+            //Load curated backup path to field
             command = "select * from CuratedBackupPath;";
             commander = new SQLiteCommand(command, connection);
             reader = commander.ExecuteReader();
             while (reader.Read())
             {
                 curatedBackup = (string)reader[0];
+            }
+            //Load autobackup enabled
+            command = "select * from AutoBackupEnabled;";
+            commander = new SQLiteCommand(command, connection);
+            reader = commander.ExecuteReader();
+            while (reader.Read())
+            {
+                bool temp = (bool)reader[0];
+                checkBox.IsChecked = temp;
             }
         }
 
@@ -261,6 +277,18 @@ namespace FileBackupSystem_FFM
         
         private void checkBox_Checked_1(object sender, RoutedEventArgs e)
         {
+            if ((bool)checkBox.IsChecked)
+            {
+                command = "update AutoBackupEnabled set state = 'true';";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+            }
+            else
+            {
+                command = "update AutoBackupEnabled set state = 'false';";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+            }
             sourceDirs = new List<string>();
             foreach (System.Windows.Controls.CheckBox checkBox in listBox.Items)
             {
