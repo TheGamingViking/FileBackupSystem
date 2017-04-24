@@ -105,9 +105,16 @@ namespace FileBackupSystem_FFM
                     }
                 }
             }
-#if DEBUG
-            System.Windows.MessageBox.Show($"Search complete. Found {modifiedFilePaths.Count} modified files.");
-#endif
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter($"{curatedBackup}\\EventLog.txt", true))
+            {
+                file.WriteLine($"Found {modifiedFilePaths.Count} modified files the {DateTime.Now}");
+                foreach (var item in modifiedFilePaths)
+                {
+                    file.WriteLine($"Filename: {item.Split('\\').Last()}");
+                }
+                file.WriteLine("");
+            }
         }
         public void MakeBackup(string[] sourceDirs, string destDir, ref string curatedBackup)
         {
