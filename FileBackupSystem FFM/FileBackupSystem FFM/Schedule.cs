@@ -69,7 +69,7 @@ namespace FileBackupSystem_FFM
                         temp = temp.Remove(2);
                         TimeSpan ts = new TimeSpan(Convert.ToInt32(temp.TrimStart('0')), 0, 0);
                         conversion = conversion.Date + ts;
-                        //Check if the CUrrent time (DateTime.Now) is larger than the scheduled time (Conversion) and that current time is smaller than conversion + 5 min.
+                        //Check if the Current time (DateTime.Now) is larger than the scheduled time (Conversion) and that current time is smaller than conversion + 5 min.
                         if (conversion < DateTime.Now && conversion.AddMinutes(x) > DateTime.Now)
                         {
                             //Run auto backup

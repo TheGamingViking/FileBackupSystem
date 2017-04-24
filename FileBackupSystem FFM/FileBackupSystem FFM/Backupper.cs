@@ -132,7 +132,7 @@ namespace FileBackupSystem_FFM
                 {
                     string curatedBackupDirectory = curatedBackup.Split('\\').Last();
                     directoryBackupper.FileSystem.RenameDirectory(curatedBackup, $"{curatedBackupDirectory.Remove(curatedBackupDirectory.LastIndexOf('_'))}_OldCurated");
-                    command = $"update BackupDirectories set path = '{curatedBackupDirectory.Remove(curatedBackupDirectory.LastIndexOf('_'))}_OldCurated' where path = '{curatedBackup}'";
+                    command = $"update BackupDirectories set path = '{curatedBackupDirectory.Remove(curatedBackupDirectory.LastIndexOf('_'))}_OldCurated' where path = '{curatedBackup}';";
                     commander = new SQLiteCommand(command, connection);
                     commander.ExecuteNonQuery();
                 }
@@ -144,6 +144,9 @@ namespace FileBackupSystem_FFM
                     directoryBackupper.FileSystem.CopyDirectory(directory, tempestDir);
                 }
                 command = $"insert into BackupDirectories values('{destDir}');";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = $"update CuratedBackupPath set path = '{destDir}';";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
             }

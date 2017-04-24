@@ -76,10 +76,16 @@ namespace FileBackupSystem_FFM
                 command = "create table BackupDirectories(path text primary key);";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
+                command = "create table CuratedBackupPath(path text primary key);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
                 command = "insert into RepositoryPath values('Enter repository');";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
-                command = "insert into BackupsToKeep(number) values (2);";
+                command = "insert into BackupsToKeep values (2);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "insert into CuratedBackupPath values('path');";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
             }
@@ -104,7 +110,15 @@ namespace FileBackupSystem_FFM
             {
                 System.Windows.Controls.CheckBox checkbox = new System.Windows.Controls.CheckBox();
                 checkbox.Content = (string)reader[0];
+                checkbox.IsChecked = true;
                 listBox.Items.Add(checkbox);
+            }
+            command = "select * from CuratedBackupPath;";
+            commander = new SQLiteCommand(command, connection);
+            reader = commander.ExecuteReader();
+            while (reader.Read())
+            {
+                curatedBackup = (string)reader[0];
             }
         }
 
