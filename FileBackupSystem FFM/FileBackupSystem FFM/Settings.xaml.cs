@@ -118,9 +118,16 @@ namespace FileBackupSystem_FFM
             }
             foreach (ScheduleTime item in schedule)
             {
-                command = $"insert into {item.Day} values('{item.Time}');";
-                commander = new SQLiteCommand(command, connection);
-                commander.ExecuteNonQuery();
+                try
+                {
+                    command = $"insert into {item.Day} values('{item.Time}');";
+                    commander = new SQLiteCommand(command, connection);
+                    commander.ExecuteNonQuery();
+                }
+                catch (System.Data.SQLite.SQLiteException)
+                {
+                    Console.WriteLine("Unique constraint failed, exception handled");
+                }
             }
             command = $"update BackupsToKeep set number = {comBox_backups.Text};";
             commander = new SQLiteCommand(command, connection);
