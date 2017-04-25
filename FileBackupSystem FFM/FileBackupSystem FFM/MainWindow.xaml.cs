@@ -218,6 +218,13 @@ namespace FileBackupSystem_FFM
 
         private void btn_closeToSleep_Click(object sender, RoutedEventArgs e)
         {
+            //If auto backup is unchecked update the database so that it stays unchecked the next time the program opens.
+            if (!(bool)checkBox.IsChecked)
+            {
+                command = "update AutoBackupEnabled set state = 'false';";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+            }
             this.Close();
         }
 
@@ -299,12 +306,6 @@ namespace FileBackupSystem_FFM
                 }
                 Schedule schedule = new Schedule(sourceDirs, txtBox_backupLocation.Text, curatedBackup, weekDays, connection);
                 schedule.DateAndTimeCheck();
-            }
-            else
-            {
-                command = "update AutoBackupEnabled set state = 'false';";
-                commander = new SQLiteCommand(command, connection);
-                commander.ExecuteNonQuery();
             }
         }
     }
