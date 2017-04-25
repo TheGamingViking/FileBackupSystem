@@ -41,6 +41,7 @@ namespace FileBackupSystem_FFM
             InitializeComponent();
             try
             {
+                //Creation of database.
                 connection = new SQLiteConnection($"Data Source = {database};Version = 3");
                 connection.Open();
                 command = "create table Monday(time text primary key);";
@@ -141,6 +142,7 @@ namespace FileBackupSystem_FFM
         //Methods
         private void btn_schedule_Click(object sender, RoutedEventArgs e)
         {
+            //Code for opening schedule window.
             try
             {
                 settingsWindow.Close();
@@ -158,11 +160,20 @@ namespace FileBackupSystem_FFM
 
         private void txtBox_filepathInput_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //Check filepath validity
+            //Check filepath validity when manually entering filepaths.
+            if (!System.IO.Directory.Exists(txtBox_filepathInput.Text))
+            {
+                btn_add.IsEnabled = false;
+            }
+            else
+            {
+                btn_add.IsEnabled = true;
+            }
         }
 
         private void btn_add_Click(object sender, RoutedEventArgs e)
         {
+            //Code for adding filepaths to source files to list so it can be checked.
             if (txtBox_filepathInput.Text.Length < 248 && txtBox_filepathInput.Text.Length >= 4)
             {
                 try
@@ -189,6 +200,7 @@ namespace FileBackupSystem_FFM
 
         private void btn_history_Click(object sender, RoutedEventArgs e)
         {
+            //Code for opening the history window.
             try
             {
                 historyWindow.Close();
@@ -204,11 +216,6 @@ namespace FileBackupSystem_FFM
             }
         }
 
-        private void checkBox_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void btn_closeToSleep_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -216,6 +223,7 @@ namespace FileBackupSystem_FFM
 
         private void btn_runBackup_Click(object sender, RoutedEventArgs e)
         {
+            //Code for the manual backup.
             if (System.Windows.MessageBox.Show("Unchecked folders will be removed from list of folders to back-up.\nAre you sure you wish to back-up selected folders?", "Confirm backup", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
                 List<System.Windows.Controls.CheckBox> toRemove = new List<System.Windows.Controls.CheckBox>();
@@ -262,6 +270,7 @@ namespace FileBackupSystem_FFM
 
         private void btn_browse_Click(object sender, RoutedEventArgs e)
         {
+            //For source file location selection.
             FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
             folderBrowser.ShowDialog();
             txtBox_filepathInput.Text = folderBrowser.SelectedPath;
@@ -269,14 +278,15 @@ namespace FileBackupSystem_FFM
 
         private void btn_setRepository_Click(object sender, RoutedEventArgs e)
         {
+            //For the selection of backup location.
             FolderBrowserDialog repositoryBrowser = new FolderBrowserDialog();
             repositoryBrowser.ShowDialog();
             txtBox_backupLocation.Text = repositoryBrowser.SelectedPath;
-            //Save to database in close method
         }
         
         private void checkBox_Checked_1(object sender, RoutedEventArgs e)
         {
+            //Auto backup enabeling code.
             if ((bool)checkBox.IsChecked)
             {
                 command = "update AutoBackupEnabled set state = 'true';";

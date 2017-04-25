@@ -11,17 +11,20 @@ namespace FileBackupSystem_FFM
 {
     public class Schedule
     {
+        //Database fields
         SQLiteConnection connection;
         SQLiteCommand commander;
         string command;
         SQLiteDataReader reader;
 
+        //Fields
         System.Collections.IList sourceDirs;
         string curatedBackup;
         string destDir;
         readonly List<string> weekDays;
         System.Timers.Timer timer;
 
+        //Constructor
         public Schedule(System.Collections.IList sourceDirs, string destDir, string curatedBackup, List<string> weekDays, SQLiteConnection connection)
         {
             this.sourceDirs = sourceDirs;
@@ -31,6 +34,7 @@ namespace FileBackupSystem_FFM
             this.connection = connection;
         }
 
+        //Methods
         public void DateAndTimeCheck()
         {
             Dictionary <string, List<string>> schedule = new Dictionary<string, List<string>>() ;
@@ -38,7 +42,7 @@ namespace FileBackupSystem_FFM
             string temp;
             int x = 2;
 
-            
+            //Add days and lists with times to schedule dictionary.
             foreach (string day in weekDays)
             {
                 command = $"select * from {day};";
@@ -69,7 +73,7 @@ namespace FileBackupSystem_FFM
                         temp = temp.Remove(2);
                         TimeSpan ts = new TimeSpan(Convert.ToInt32(temp.TrimStart('0')), 0, 0);
                         conversion = conversion.Date + ts;
-                        //Check if the Current time (DateTime.Now) is larger than the scheduled time (Conversion) and that current time is smaller than conversion + 5 min.
+                        //Check if the current time (DateTime.Now) is larger than the scheduled time (Conversion) and that current time is smaller than conversion + 5 min.
                         if (conversion < DateTime.Now && conversion.AddMinutes(x) > DateTime.Now)
                         {
                             //Run auto backup

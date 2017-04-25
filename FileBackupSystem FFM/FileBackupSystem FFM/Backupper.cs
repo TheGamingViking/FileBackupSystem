@@ -26,8 +26,6 @@ namespace FileBackupSystem_FFM
         string command;
         SQLiteCommand commander;
 
-        //Properties
-
         //Constructor
         public Backupper(BackupType backupType, System.Collections.IList sourceDirs, string destDir, ref string curatedBackup, SQLiteConnection connection)
         {
@@ -50,6 +48,7 @@ namespace FileBackupSystem_FFM
         //Methods
         public void FindChanges(string[] sourceDirs, string destDir, string curatedBackup)
         {
+            //Code for finding new files/changes so UpdateBackup can move them.
             Microsoft.VisualBasic.Devices.Computer curator = new Microsoft.VisualBasic.Devices.Computer();
             DateTime lastWriteOfFile;
             string currentBackupDir;
@@ -105,7 +104,7 @@ namespace FileBackupSystem_FFM
                     }
                 }
             }
-
+            //Create or write to eventlog.
             using (System.IO.StreamWriter file = new System.IO.StreamWriter($"{curatedBackup}\\EventLog.txt", true))
             {
                 file.WriteLine($"Found {modifiedFilePaths.Count} modified files the {DateTime.Now}");
@@ -192,6 +191,7 @@ namespace FileBackupSystem_FFM
         }
         public void UpdateBackup()
         {
+            //Code for moving the found file to to the curated backup
             Microsoft.VisualBasic.Devices.Computer updater = new Microsoft.VisualBasic.Devices.Computer();
 
             for (int i = 0; i < backupFilesToUpdate.Count; i++)

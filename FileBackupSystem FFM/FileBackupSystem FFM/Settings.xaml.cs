@@ -15,9 +15,6 @@ using System.Data.SQLite;
 
 namespace FileBackupSystem_FFM
 {
-    /// <summary>
-    /// Interaction logic for Schedule.xaml
-    /// </summary>
     public partial class Settings : Window
     {
         //database fields
@@ -28,6 +25,7 @@ namespace FileBackupSystem_FFM
         //fields
         List<ScheduleTime> schedule;
         readonly List<string> weekDays;
+
         //constructor
         public Settings(SQLiteConnection connection, List<string> weekDays)
         {
@@ -75,6 +73,7 @@ namespace FileBackupSystem_FFM
 
         private void btn_remove_Click(object sender, RoutedEventArgs e)
         {
+            //Code for removing selected times form schedule.
             try
             {
                 foreach (ScheduleTime item in schedule)
@@ -95,7 +94,7 @@ namespace FileBackupSystem_FFM
 
         private void btn_confirm_Click(object sender, RoutedEventArgs e)
         {
-            //Save settings
+            //Save schedule/settings to database and close schedule window.
             foreach (string day in weekDays)
             {
                 command = $"select * from {day};";

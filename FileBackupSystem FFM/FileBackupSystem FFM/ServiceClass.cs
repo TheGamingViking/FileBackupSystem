@@ -8,12 +8,11 @@ using System.Timers;
 
 namespace FileBackupSystem_FFM
 {
+    //Code not intergrated. From experiment with services.
     class ServiceClass : ServiceBase
     {
         //Fields
         protected Timer timer = new Timer(30000);
-
-        //Properties
 
         //Constructors
         public ServiceClass()

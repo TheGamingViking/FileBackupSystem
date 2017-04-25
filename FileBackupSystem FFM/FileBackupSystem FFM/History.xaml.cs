@@ -15,9 +15,7 @@ using System.Data.SQLite;
 
 namespace FileBackupSystem_FFM
 {
-    /// <summary>
-    /// Interaction logic for History.xaml
-    /// </summary>
+    //Code incomplete and server no function other than a menu that shows the amount of backups.
     public partial class History : Window
     {
         //Fields

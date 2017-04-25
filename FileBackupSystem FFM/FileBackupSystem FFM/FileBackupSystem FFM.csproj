@@ -40,7 +40,7 @@
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite">
-      <HintPath>..\..\..\..\..\..\..\..\Desktop\System.Data.SQLite.dll</HintPath>
+      <HintPath>..\..\..\..\..\Documents\Visual Studio 2015\Projects\SQL Opgave Dag 3\SQL Opgave Dag 3\bin\Debug\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows" />
